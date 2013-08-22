@@ -1,5 +1,5 @@
 <%= form_tag("/articles/merge/#{@article.id}", method: "get") do  %>
-<%= label_tag(:merge_with, "Article ID") %>
+<%= label_tag(:merge_with, "Merge Articles") %>
 <%= number_field_tag(:merge_with) %>
 <%= submit_tag("Merge") %>
 <% end %>

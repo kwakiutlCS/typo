@@ -84,6 +84,7 @@ class Article < Content
       c.article_id = self.id
       c.save
     end
+    
     self.save
     self
   end

@@ -120,6 +120,8 @@ class ArticlesController < ContentController
           flash[:alert] = "It's not possible to merge an article with itself"
           redirect_to root_path
         else
+          merged_article.reload
+          merged_article.destroy
           return show_article
         end
     
