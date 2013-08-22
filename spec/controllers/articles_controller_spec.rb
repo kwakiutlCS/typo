@@ -217,6 +217,15 @@ describe ArticlesController do
     end
   end
 
+  describe "#merge action" do
+    it "should redirect standard users" do
+      Factory.create(:article)
+      Factory.create(:article)
+      send("get", "merge", :id => "1", :merge_with => "2")
+      response.should redirect_to(:controller => "accounts", :action => "login")
+    end
+  end
+
 end
 
 describe ArticlesController, "nosettings" do

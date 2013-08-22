@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
   match 'admin', :to  => 'admin/dashboard#index', :format => false, :as => :admin_dashboard
 
+  
+
   match 'articles.:format', :to => 'articles#index', :constraints => {:format => 'rss'}, :as => 'rss'
   match 'articles.:format', :to => 'articles#index', :constraints => {:format => 'atom'}, :as => 'atom'
 
@@ -68,6 +70,7 @@ Rails.application.routes.draw do
   match 'articles/markup_help/:id', :to => 'articles#markup_help', :format => false
   match 'articles/tag', :to => 'articles#tag', :format => false
   match 'articles/category', :to => 'articles#category', :format => false
+  match "articles/merge(/:id)", :to => "articles#merge", :format => false
 
   # SetupController
   match '/setup', :to => 'setup#index', :format => false
@@ -115,5 +118,10 @@ Rails.application.routes.draw do
   # default
   root :to  => 'articles#index', :format => false
 
+  
+
   match '*from', :to => 'articles#redirect', :format => false
+
+
+  
 end

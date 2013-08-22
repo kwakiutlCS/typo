@@ -1,5 +1,5 @@
 class ArticlesController < ContentController
-  before_filter :login_required, :only => [:preview]
+  before_filter :login_required, :only => [:preview, :merge]
   before_filter :auto_discovery_feed, :only => [:show, :index]
   before_filter :verify_config
 
@@ -99,6 +99,40 @@ class ArticlesController < ContentController
 
     render "errors/404", :status => 404
   end
+
+
+
+  def merge
+    if current_user.admin?
+      id = params[:id]
+      merge_id = params[:merge_with]
+      
+      @article = Article.find(id)
+      merged_article = Article.where(id: merge_id).first
+    
+      unless merged_article
+        flash[:alert] = "That article doesn't exist"
+        redirect_to root_path
+      else
+        result = @article.merge(merged_article)
+    
+        unless result
+          flash[:alert] = "It's not possible to merge an article with itself"
+          redirect_to root_path
+        else
+          return show_article
+        end
+    
+      end
+    else
+      redirect_to(:controller => "accounts", :action => "login")
+    end
+
+    
+  end
+
+
+
 
 
   ### Deprecated Actions ###

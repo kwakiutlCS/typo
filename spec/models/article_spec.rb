@@ -115,6 +115,45 @@ describe Article do
     assert_equal "my-cats-best-friend", "My Cat's Best Friend".to_url
   end
 
+
+  describe "#merge" do
+    it "should return nil for equal articles" do
+      a = Article.new(title: "hello", body: "hello this is the body")
+      a.merge(a).should == nil
+    end
+
+    it "should add the 2 bodies" do
+      a = Article.new(title: "hello", body: "mother")
+      b = Article.new(title: "goodbye", body:"fucker")
+      c = a.merge(b)
+      c.body.should == "motherfucker"
+    end
+
+    it "should preserve the title" do
+      a = Article.new(title: "hello", body: "mother")
+      b = Article.new(title: "goodbye", body:"fucker")
+      c = a.merge(b)
+      c.title.should == a.title
+    end
+
+    it "should preserve the author" do
+      a = Article.new(title: "hello", body: "mother", author: "palerma")
+      b = Article.new(title: "goodbye", body:"fucker", author: "trengo")
+      c = a.merge(b)
+      c.author.should == a.author
+    end
+
+    it "should preserve the 2 articles' comments" do
+      a = Article.new(title: "hello", body: "mother", author: "palerma", allow_comments: true)
+      b = Article.new(title: "goodbye", body:"fucker", author: "trengo", allow_comments: true)
+      ham_comment = Factory(:comment, :article => a)
+      spam_comment = Factory(:spam_comment, :article => b)
+      c = a.merge(b)
+      c.comments.should == [ham_comment, spam_comment]
+    end
+  end
+
+  
   describe "#stripped_title" do
     it "works for simple cases" do
       assert_equal "article-1", Article.new(:title => 'Article 1!').title.to_permalink
